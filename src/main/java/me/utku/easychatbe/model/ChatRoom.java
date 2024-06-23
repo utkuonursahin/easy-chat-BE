@@ -19,8 +19,8 @@ public class ChatRoom extends BaseModel {
     @ManyToMany
     @JoinTable(
             name = "chat_room_members",
-            joinColumns = @JoinColumn(name = "chat_room_id"),
-            inverseJoinColumns = @JoinColumn(name = "member_id")
+            joinColumns = @JoinColumn(name = "chat_room_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "member_id", referencedColumnName = "id")
     )
     private List<User> members;
 

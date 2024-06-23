@@ -36,14 +36,14 @@ public class ChatRoomController implements BaseController<ChatRoom>{
 
     @PostMapping
     @Override
-    public ResponseEntity<GenericResponse<ChatRoom>> create(@RequestBody Object data) {
+    public ResponseEntity<GenericResponse<ChatRoom>> create(@RequestBody BaseModel data) {
         ChatRoom chatRoom = chatRoomService.createEntity((ChatRoom)data);
         return new GenericResponse<>(HttpStatus.CREATED.value(), "Chat room created successfully", chatRoom).toResponseEntity();
     }
 
     @PatchMapping("/{id}")
     @Override
-    public ResponseEntity<GenericResponse<ChatRoom>> update(@PathVariable UUID id, @RequestBody Object updateData) {
+    public ResponseEntity<GenericResponse<ChatRoom>> update(@PathVariable UUID id, @RequestBody BaseModel updateData) {
         ChatRoom chatRoom = chatRoomService.updateEntity(id, (ChatRoom)updateData);
         return new GenericResponse<>(HttpStatus.OK.value(), "Chat room updated successfully", chatRoom).toResponseEntity();
     }

@@ -12,7 +12,7 @@ import java.util.UUID;
 public interface BaseController <T> {
     ResponseEntity<GenericResponse<List<T>>> getAll();
     ResponseEntity<GenericResponse<T>> getById(@PathVariable UUID id);
-    ResponseEntity<GenericResponse<T>> create(@RequestBody Object data);
-    ResponseEntity<GenericResponse<T>> update(@PathVariable UUID id, @RequestBody Object updateData);
+    ResponseEntity<GenericResponse<T>> create(@RequestBody BaseModel data);
+    ResponseEntity<GenericResponse<T>> update(@PathVariable UUID id, @RequestBody BaseModel updateData);
     ResponseEntity<GenericResponse<Boolean>> delete(@PathVariable UUID id);
 }

@@ -37,14 +37,14 @@ public class UserController implements BaseController<UserDto> {
 
     @PostMapping
     @Override
-    public ResponseEntity<GenericResponse<UserDto>> create(@RequestBody Object data) {
+    public ResponseEntity<GenericResponse<UserDto>> create(@RequestBody BaseModel data) {
         User user = userService.createEntity((User)data);
         return new GenericResponse<>(HttpStatus.CREATED.value(), "User created successfully", user.toUserDto()).toResponseEntity();
     }
 
     @PatchMapping("/{id}")
     @Override
-    public ResponseEntity<GenericResponse<UserDto>> update(@PathVariable UUID id, @RequestBody Object updateData) {
+    public ResponseEntity<GenericResponse<UserDto>> update(@PathVariable UUID id, @RequestBody BaseModel updateData) {
         User user = userService.updateEntity(id, (User)updateData);
         return new GenericResponse<>(HttpStatus.OK.value(), "User updated successfully", user.toUserDto()).toResponseEntity();
     }

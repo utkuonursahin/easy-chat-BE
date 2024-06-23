@@ -36,14 +36,14 @@ public class MessageController implements BaseController<Message>{
 
     @PostMapping
     @Override
-    public ResponseEntity<GenericResponse<Message>> create(@RequestBody Object data) {
+    public ResponseEntity<GenericResponse<Message>> create(@RequestBody BaseModel data) {
         Message message = messageService.createEntity((Message)data);
         return new GenericResponse<>(HttpStatus.CREATED.value(), "Message created successfully", message).toResponseEntity();
     }
 
     @PatchMapping("/{id}")
     @Override
-    public ResponseEntity<GenericResponse<Message>> update(@PathVariable UUID id, @RequestBody Object updateData) {
+    public ResponseEntity<GenericResponse<Message>> update(@PathVariable UUID id, @RequestBody BaseModel updateData) {
         Message message = messageService.updateEntity(id, (Message)updateData);
         return new GenericResponse<>(HttpStatus.OK.value(), "Message updated successfully", message).toResponseEntity();
     }
