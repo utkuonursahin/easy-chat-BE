@@ -3,6 +3,8 @@ package me.utku.easychatbe.service;
 import me.utku.easychatbe.exception.EntityNotFoundException;
 import me.utku.easychatbe.model.Message;
 import me.utku.easychatbe.repository.MessageRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,5 +47,9 @@ public class MessageService implements BaseService<Message> {
         Message message = this.getEntityById(id);
         if(message == null) throw new EntityNotFoundException();
         this.messageRepository.deleteById(id);
+    }
+
+    public Page<List<Message>> getMessagesPageByReceiverId(UUID receiverId, int page, int size) {
+        return this.messageRepository.findAllByReceiver_IdOrderByCreatedAtDesc(receiverId, PageRequest.of(page,size));
     }
 }

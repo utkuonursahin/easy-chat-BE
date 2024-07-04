@@ -2,6 +2,7 @@ package me.utku.easychatbe.service;
 
 import me.utku.easychatbe.exception.EntityNotFoundException;
 import me.utku.easychatbe.model.ChatRoom;
+import me.utku.easychatbe.model.User;
 import me.utku.easychatbe.repository.ChatRoomRepository;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +12,11 @@ import java.util.UUID;
 @Service
 public class ChatRoomService implements BaseService<ChatRoom> {
     private final ChatRoomRepository chatRoomRepository;
+    private final AuthService authService;
 
-    public ChatRoomService(ChatRoomRepository chatRoomRepository) {
+    public ChatRoomService(ChatRoomRepository chatRoomRepository, AuthService authService) {
         this.chatRoomRepository = chatRoomRepository;
+        this.authService = authService;
     }
 
     @Override
@@ -30,6 +33,9 @@ public class ChatRoomService implements BaseService<ChatRoom> {
 
     @Override
     public ChatRoom createEntity(ChatRoom entity) {
+        User authUser = authService.getAuthenticatedUser();
+        entity.setCreatedBy(authUser);
+        entity.setMembers(List.of(authUser));
         return chatRoomRepository.save(entity);
     }
 

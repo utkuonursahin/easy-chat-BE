@@ -46,8 +46,12 @@ public class AuthService {
         return userDto;
     }
 
-    public GenericResponse<UserDto> getAuthenticatedUser(User user){
+    public GenericResponse<UserDto> checkIsAuthenticated(User user){
         if(user == null) return new GenericResponse<>(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase(),null);
         else return new GenericResponse<>(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(),user.toUserDto());
+    }
+
+    public User getAuthenticatedUser(){
+        return (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }
