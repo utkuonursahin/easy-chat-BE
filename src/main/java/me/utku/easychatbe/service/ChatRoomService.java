@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Service
 @Transactional
-public class ChatRoomService implements BaseService<ChatRoomDto> {
+public class ChatRoomService implements BaseService<ChatRoom,ChatRoomDto> {
     private final ChatRoomRepository chatRoomRepository;
     private final AuthService authService;
 
@@ -35,21 +35,18 @@ public class ChatRoomService implements BaseService<ChatRoomDto> {
     }
 
     @Override
-    public ChatRoomDto createEntity(ChatRoomDto entity) {
+    public ChatRoomDto createEntity(ChatRoom entity) {
         User authUser = authService.getAuthenticatedUser();
-        ChatRoom chatRoom = ChatRoom.builder()
-                .name(entity.name())
-                .createdBy(authUser)
-                .members(List.of(authUser))
-                .build();
-        return chatRoomRepository.save(chatRoom).toChatRoomDto();
+        entity.setCreatedBy(authUser);
+        entity.setMembers(List.of(authUser));
+        return chatRoomRepository.save(entity).toChatRoomDto();
     }
 
     @Override
-    public ChatRoomDto updateEntity(UUID id, ChatRoomDto newEntity) {
+    public ChatRoomDto updateEntity(UUID id, ChatRoom updateEntity) {
         ChatRoom chatRoom = chatRoomRepository.findById(id).orElse(null);
         if (chatRoom == null) throw new EntityNotFoundException();
-        chatRoom = chatRoomRepository.save(ChatRoom.builder().name(newEntity.name()).build());
+        chatRoom = chatRoomRepository.save(updateEntity);
         return chatRoom.toChatRoomDto();
     }
 

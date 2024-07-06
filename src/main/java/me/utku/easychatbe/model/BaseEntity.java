@@ -10,6 +10,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.Instant;
 import java.util.UUID;
 
+/**
+ * This abstract class is the base class for all entities in the project.
+ */
 @MappedSuperclass
 @Getter
 @Setter

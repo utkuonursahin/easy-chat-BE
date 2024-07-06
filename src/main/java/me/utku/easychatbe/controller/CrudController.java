@@ -9,39 +9,44 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Base controller class for CRUD implementations
+ * @param <I> Input Model
+ * @param <R> Response DTO
+ */
 @RestController
-public abstract class CrudController<T> implements BaseController<T> {
-    protected final BaseService<T> entityService;
+public abstract class CrudController<I,R> implements BaseController<I,R> {
+    protected final BaseService<I,R> entityService;
 
-    protected CrudController(BaseService<T> entityService) {
+    protected CrudController(BaseService<I,R> entityService) {
         this.entityService = entityService;
     }
 
     @Override
     @GetMapping
-    public ResponseEntity<GenericResponse<List<T>>> getAll() {
-        List<T> entityList = entityService.getAllEntities();
+    public ResponseEntity<GenericResponse<List<R>>> getAll() {
+        List<R> entityList = entityService.getAllEntities();
         return new GenericResponse<>(HttpStatus.OK.value(), "Entities fetched successfully", entityList).toResponseEntity();
     }
 
     @Override
     @GetMapping("/{id}")
-    public ResponseEntity<GenericResponse<T>> getById(@PathVariable UUID id) {
-        T entity = entityService.getEntityById(id);
+    public ResponseEntity<GenericResponse<R>> getById(@PathVariable UUID id) {
+        R entity = entityService.getEntityById(id);
         return new GenericResponse<>(HttpStatus.OK.value(), "Entity fetched successfully", entity).toResponseEntity();
     }
 
     @Override
     @PostMapping
-    public ResponseEntity<GenericResponse<T>> create(@RequestBody T data) {
-        T entity = entityService.createEntity(data);
+    public ResponseEntity<GenericResponse<R>> create(@RequestBody I data) {
+        R entity = entityService.createEntity(data);
         return new GenericResponse<>(HttpStatus.CREATED.value(), "Entity created successfully", entity).toResponseEntity();
     }
 
     @Override
     @PatchMapping("/{id}")
-    public ResponseEntity<GenericResponse<T>> update(@PathVariable UUID id, @RequestBody T updateData) {
-        T entity = entityService.updateEntity(id, updateData);
+    public ResponseEntity<GenericResponse<R>> update(@PathVariable UUID id, @RequestBody I updateData) {
+        R entity = entityService.updateEntity(id, updateData);
         return new GenericResponse<>(HttpStatus.OK.value(), "Entity updated successfully", entity).toResponseEntity();
     }
 

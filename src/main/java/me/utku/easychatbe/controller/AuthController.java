@@ -37,7 +37,7 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<GenericResponse<UserDto>> signup(@RequestBody User newUser) {
-        UserDto userDto = userService.createEntity(newUser).toUserDto();
+        UserDto userDto = userService.createEntity(newUser);
         return new GenericResponse<>(HttpStatus.CREATED.value(), "User created", userDto).toResponseEntity();
     }
 }

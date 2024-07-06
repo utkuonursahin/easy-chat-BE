@@ -1,5 +1,6 @@
 package me.utku.easychatbe.service;
 
+import me.utku.easychatbe.dto.MessageDto;
 import me.utku.easychatbe.exception.EntityNotFoundException;
 import me.utku.easychatbe.model.Message;
 import me.utku.easychatbe.repository.MessageRepository;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class MessageService implements BaseService<Message> {
+public class MessageService implements BaseService<Message, MessageDto> {
     private final MessageRepository messageRepository;
 
     public MessageService(MessageRepository messageRepository) {
@@ -19,32 +20,32 @@ public class MessageService implements BaseService<Message> {
     }
 
     @Override
-    public Message getEntityById(UUID id) {
+    public MessageDto getEntityById(UUID id) {
         Message message = this.messageRepository.findById(id).orElse(null);
         if(message == null) throw new EntityNotFoundException();
-        return message;
+        return message.toMessageDto();
     }
 
     @Override
-    public List<Message> getAllEntities() {
-        return this.messageRepository.findAll();
+    public List<MessageDto> getAllEntities() {
+        return this.messageRepository.findAll().stream().map(Message::toMessageDto).toList();
     }
 
     @Override
-    public Message createEntity(Message entity) {
-        return this.messageRepository.save(entity);
+    public MessageDto createEntity(Message entity) {
+        return this.messageRepository.save(entity).toMessageDto();
     }
 
     @Override
-    public Message updateEntity(UUID id, Message newEntity) {
-        Message message = this.getEntityById(id);
+    public MessageDto updateEntity(UUID id, Message updateEntity) {
+        MessageDto message = this.getEntityById(id);
         if(message == null) throw new EntityNotFoundException();
-        return this.messageRepository.save(newEntity);
+        return this.messageRepository.save(updateEntity).toMessageDto();
     }
 
     @Override
     public void deleteEntity(UUID id) {
-        Message message = this.getEntityById(id);
+        MessageDto message = this.getEntityById(id);
         if(message == null) throw new EntityNotFoundException();
         this.messageRepository.deleteById(id);
     }

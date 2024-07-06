@@ -2,6 +2,7 @@ package me.utku.easychatbe.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import me.utku.easychatbe.dto.MessageDto;
 
 import java.util.List;
 
@@ -29,5 +30,9 @@ public class Message extends BaseEntity {
         this.receiver = receiver;
         this.content = content;
         this.seenBy = seenBy;
+    }
+
+    public MessageDto toMessageDto() {
+        return new MessageDto(this.getId(), this.getSender().toUserDto(), this.getReceiver().toChatRoomDto(), this.getSeenBy().stream().map(User::toUserDto).toList(), this.getContent());
     }
 }
