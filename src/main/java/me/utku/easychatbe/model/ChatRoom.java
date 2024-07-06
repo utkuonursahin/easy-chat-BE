@@ -2,6 +2,7 @@ package me.utku.easychatbe.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import me.utku.easychatbe.dto.ChatRoomDto;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.List;
@@ -11,17 +12,12 @@ import java.util.List;
 @DynamicUpdate
 @Builder
 @Data
-public class ChatRoom extends BaseModel {
+@EqualsAndHashCode(callSuper = true)
+public class ChatRoom extends BaseEntity {
     private String name;
-    @ManyToOne
-    @JoinColumn(name = "creator_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
     private User createdBy;
-    @ManyToMany
-    @JoinTable(
-            name = "chat_room_members",
-            joinColumns = @JoinColumn(name = "chat_room_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "member_id", referencedColumnName = "id")
-    )
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<User> members;
 
     public ChatRoom(){
@@ -33,5 +29,9 @@ public class ChatRoom extends BaseModel {
         this.name = name;
         this.createdBy = createdBy;
         this.members = members;
+    }
+
+    public ChatRoomDto toChatRoomDto(){
+        return new ChatRoomDto(this.getId(), this.name, this.createdBy.toUserDto(), this.members.stream().map(User::toUserDto).toList());
     }
 }

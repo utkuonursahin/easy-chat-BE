@@ -9,12 +9,13 @@ import java.util.List;
 @Table(name = "messages")
 @Builder
 @Data
-public class Message extends BaseModel {
-    @ManyToOne
+@EqualsAndHashCode(callSuper = true)
+public class Message extends BaseEntity {
+    @ManyToOne(fetch = FetchType.LAZY)
     private User sender;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private ChatRoom receiver;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<User> seenBy;
     private String content;
 

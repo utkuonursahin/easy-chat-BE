@@ -14,7 +14,8 @@ import java.util.List;
 @DynamicUpdate
 @Builder
 @Data
-public class User extends BaseModel implements UserDetails {
+@EqualsAndHashCode(callSuper = true)
+public class User extends BaseEntity implements UserDetails {
     private String username;
     private String email;
     private String password;
@@ -45,6 +46,6 @@ public class User extends BaseModel implements UserDetails {
     }
 
     public UserDto toUserDto(){
-        return new UserDto(username, email, List.copyOf(authorities));
+        return new UserDto(this.getId(),username, email, List.copyOf(authorities));
     }
 }

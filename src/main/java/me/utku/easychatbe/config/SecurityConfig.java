@@ -54,7 +54,7 @@ public class SecurityConfig {
                                         "/api/auth/is-authenticated"
                                         ).permitAll()
                                 .requestMatchers("/api/user/**").hasRole(Role.ROLE_ADMIN.getValue())
-                                .requestMatchers("/api/chat-rooms").hasRole(Role.ROLE_USER.getValue())
+                                .requestMatchers("/api/chat-rooms/**").hasRole(Role.ROLE_USER.getValue())
                                 .anyRequest().denyAll()
                 )
                 .logout(logout -> logout

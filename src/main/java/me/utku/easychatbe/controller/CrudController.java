@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @RestController
 public abstract class CrudController<T> implements BaseController<T> {
-    private final BaseService<T> entityService;
+    protected final BaseService<T> entityService;
 
     protected CrudController(BaseService<T> entityService) {
         this.entityService = entityService;
