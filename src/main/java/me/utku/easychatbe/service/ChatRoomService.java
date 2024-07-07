@@ -25,7 +25,7 @@ public class ChatRoomService implements BaseService<ChatRoom,ChatRoomDto> {
     @Override
     public ChatRoomDto getEntityById(UUID id) {
         ChatRoom chatRoom = chatRoomRepository.findById(id).orElse(null);
-        if (chatRoom == null) throw new RuntimeException("Entity not found");
+        if (chatRoom == null) throw new EntityNotFoundException();
         return chatRoom.toChatRoomDto();
     }
 
@@ -59,5 +59,14 @@ public class ChatRoomService implements BaseService<ChatRoom,ChatRoomDto> {
 
     public List<ChatRoomDto> getJoinedChatRooms(User user){
         return chatRoomRepository.findAllByMembersContaining(user).stream().map(ChatRoom::toChatRoomDto).toList();
+    }
+
+    public ChatRoomDto joinChatRoom(UUID chatRoomId){
+        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElse(null);
+        if (chatRoom == null) throw new EntityNotFoundException();
+        User authUser = authService.getAuthenticatedUser();
+        chatRoom.getMembers().add(authUser);
+        chatRoom = chatRoomRepository.save(chatRoom);
+        return chatRoom.toChatRoomDto();
     }
 }

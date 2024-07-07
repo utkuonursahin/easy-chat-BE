@@ -50,7 +50,8 @@ public class MessageService implements BaseService<Message, MessageDto> {
         this.messageRepository.deleteById(id);
     }
 
-    public Page<List<Message>> getMessagesPageByReceiverId(UUID receiverId, int page, int size) {
-        return this.messageRepository.findAllByReceiver_IdOrderByCreatedAtDesc(receiverId, PageRequest.of(page,size));
+    public Page<List<MessageDto>> getMessagesPageByReceiverId(UUID receiverId, int page, int size) {
+        return this.messageRepository.findAllByReceiver_IdOrderByCreatedAtDesc(receiverId, PageRequest.of(page,size))
+                .map(messages -> messages.stream().map(Message::toMessageDto).toList());
     }
 }
