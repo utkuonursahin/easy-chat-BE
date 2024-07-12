@@ -5,6 +5,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
@@ -16,6 +17,7 @@ import java.util.UUID;
 @MappedSuperclass
 @Getter
 @Setter
+@SuperBuilder
 public abstract class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -23,4 +25,8 @@ public abstract class BaseEntity {
     @CreationTimestamp
     private Instant createdAt;
     private boolean isVisible = true;
+
+    protected BaseEntity() {
+        super();
+    }
 }

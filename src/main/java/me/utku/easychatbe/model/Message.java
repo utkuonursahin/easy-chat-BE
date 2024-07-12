@@ -2,15 +2,18 @@ package me.utku.easychatbe.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.Accessors;
+import lombok.experimental.SuperBuilder;
 import me.utku.easychatbe.dto.MessageDto;
 
 import java.util.List;
 
 @Entity
 @Table(name = "messages")
-@Builder
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode(callSuper = true)
+@SuperBuilder
 public class Message extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private User sender;

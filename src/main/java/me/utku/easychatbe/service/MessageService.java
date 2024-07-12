@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class MessageService implements BaseService<Message, MessageDto> {
+public class MessageService implements BaseService<MessageDto> {
     private final MessageRepository messageRepository;
 
     public MessageService(MessageRepository messageRepository) {
@@ -32,15 +32,15 @@ public class MessageService implements BaseService<Message, MessageDto> {
     }
 
     @Override
-    public MessageDto createEntity(Message entity) {
-        return this.messageRepository.save(entity).toMessageDto();
+    public MessageDto createEntity(MessageDto entityDto) {
+        return this.messageRepository.save(entityDto.toMessage()).toMessageDto();
     }
 
     @Override
-    public MessageDto updateEntity(UUID id, Message updateEntity) {
+    public MessageDto updateEntity(UUID id, MessageDto updateEntityDto) {
         MessageDto message = this.getEntityById(id);
         if(message == null) throw new EntityNotFoundException();
-        return this.messageRepository.save(updateEntity).toMessageDto();
+        return this.messageRepository.save(updateEntityDto.toMessage()).toMessageDto();
     }
 
     @Override

@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import me.utku.easychatbe.dto.AuthRequest;
 import me.utku.easychatbe.dto.GenericResponse;
 import me.utku.easychatbe.dto.UserDto;
+import me.utku.easychatbe.dto.UserRegisterDto;
 import me.utku.easychatbe.model.User;
 import me.utku.easychatbe.service.AuthService;
 import me.utku.easychatbe.service.UserService;
@@ -35,9 +36,9 @@ public class AuthController {
         return new GenericResponse<>(HttpStatus.OK.value(), "Login successful", userDto).toResponseEntity();
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<GenericResponse<UserDto>> signup(@RequestBody User newUser) {
-        UserDto userDto = userService.createEntity(newUser);
+    @PostMapping("/register")
+    public ResponseEntity<GenericResponse<UserDto>> signup(@RequestBody UserRegisterDto userRegisterDto) {
+        UserDto userDto = userService.registerUser(userRegisterDto);
         return new GenericResponse<>(HttpStatus.CREATED.value(), "User created", userDto).toResponseEntity();
     }
 }

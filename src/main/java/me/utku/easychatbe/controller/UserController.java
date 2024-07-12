@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/user")
-public class UserController extends CrudController<User, UserDto> {
+public class UserController extends CrudController<UserDto> {
     public UserController(UserService userService) {
         super(userService);
     }

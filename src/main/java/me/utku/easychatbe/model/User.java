@@ -2,6 +2,8 @@ package me.utku.easychatbe.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.Accessors;
+import lombok.experimental.SuperBuilder;
 import me.utku.easychatbe.dto.UserDto;
 import me.utku.easychatbe.enums.Role;
 import org.hibernate.annotations.DynamicUpdate;
@@ -12,9 +14,10 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @DynamicUpdate
-@Builder
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode(callSuper = true)
+@SuperBuilder
 public class User extends BaseEntity implements UserDetails {
     private String username;
     private String email;

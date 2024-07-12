@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/chat-rooms")
-public class ChatRoomController extends CrudController<ChatRoom,ChatRoomDto> {
+public class ChatRoomController extends CrudController<ChatRoomDto> {
     public ChatRoomController(ChatRoomService chatRoomService) {
         super(chatRoomService);
     }
