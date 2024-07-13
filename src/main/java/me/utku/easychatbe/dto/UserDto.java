@@ -13,11 +13,11 @@ public record UserDto(
         List<Role> authorities
 ) {
     public User toUser(){
-        return User.builder()
-                .id(id)
-                .username(username)
-                .email(email)
-                .authorities(authorities)
-                .build();
+        User user = new User()
+                .setUsername(username)
+                .setEmail(email)
+                .setAuthorities(authorities);
+        user.setId(id);
+        return user;
     }
 }

@@ -3,7 +3,6 @@ package me.utku.easychatbe.model;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
-import lombok.experimental.SuperBuilder;
 import me.utku.easychatbe.dto.UserDto;
 import me.utku.easychatbe.enums.Role;
 import org.hibernate.annotations.DynamicUpdate;
@@ -17,15 +16,13 @@ import java.util.List;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
-@SuperBuilder
+@Accessors(chain = true)
 public class User extends BaseEntity implements UserDetails {
     private String username;
     private String email;
     private String password;
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-    @JoinTable(name = "authorities", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name= "role", nullable = false)
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING) @Column(name= "authority", nullable = false)
     private List<Role> authorities = List.of(Role.ROLE_USER);
     private boolean isEnabled = true;
     private boolean accountNonExpired = true;

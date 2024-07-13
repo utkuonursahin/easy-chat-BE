@@ -3,7 +3,6 @@ package me.utku.easychatbe.dto;
 import me.utku.easychatbe.model.ChatRoom;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public record ChatRoomDto(
@@ -13,12 +12,11 @@ public record ChatRoomDto(
         List<UserDto> members
 ) {
     public ChatRoom toChatRoom(){
-        return ChatRoom.builder()
-                .id(id)
-                .name(name)
-                .createdBy(createdBy.toUser())
-                .members(members.stream().map(UserDto::toUser).toList())
-                .isVisible(true)
-                .build();
+        ChatRoom chatRoom = new ChatRoom()
+                .setName(name)
+                .setCreatedBy(createdBy.toUser())
+                .setMembers(members.stream().map(UserDto::toUser).toList());
+        chatRoom.setId(id);
+        return chatRoom;
     }
 }

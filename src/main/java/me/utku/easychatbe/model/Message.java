@@ -3,17 +3,17 @@ package me.utku.easychatbe.model;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
-import lombok.experimental.SuperBuilder;
 import me.utku.easychatbe.dto.MessageDto;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.List;
 
 @Entity
-@Table(name = "messages")
+@DynamicUpdate
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
-@SuperBuilder
+@Accessors(chain = true)
 public class Message extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private User sender;

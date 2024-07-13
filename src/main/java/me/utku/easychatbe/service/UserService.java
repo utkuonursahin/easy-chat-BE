@@ -65,17 +65,11 @@ public class UserService implements BaseService<UserDto>,UserDetailsService {
     }
 
     public UserDto registerUser(UserRegisterDto userRegisterDto){
-        return userRepository.save(User.builder()
-                .username(userRegisterDto.username())
-                .password(bCryptPasswordEncoder.encode(userRegisterDto.password()))
-                .email(userRegisterDto.email())
-                .authorities(List.of(Role.ROLE_USER))
-                .accountNonExpired(true)
-                .accountNonLocked(true)
-                .credentialsNonExpired(true)
-                .isEnabled(true)
-                .isVisible(true)
-                .build()
+        return userRepository.save(new User()
+                .setUsername(userRegisterDto.username())
+                .setPassword(bCryptPasswordEncoder.encode(userRegisterDto.password()))
+                .setEmail(userRegisterDto.email())
+                .setAuthorities(List.of(Role.ROLE_USER))
         ).toUserDto();
     }
 }

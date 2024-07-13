@@ -3,20 +3,17 @@ package me.utku.easychatbe.model;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
-import lombok.experimental.SuperBuilder;
 import me.utku.easychatbe.dto.ChatRoomDto;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.List;
-import java.util.Optional;
 
 @Entity
-@Table(name = "chat_rooms")
 @DynamicUpdate
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
-@SuperBuilder
+@Accessors(chain = true)
 public class ChatRoom extends BaseEntity {
     private String name;
     @ManyToOne(fetch = FetchType.LAZY)

@@ -13,13 +13,12 @@ public record MessageDto(
         String content
 ) {
     public Message toMessage(){
-        return Message.builder()
-                .id(id)
-                .sender(sender.toUser())
-                .receiver(receiver.toChatRoom())
-                .seenBy(seenBy.stream().map(UserDto::toUser).toList())
-                .content(content)
-                .isVisible(true)
-                .build();
+        Message message = new Message()
+                .setSender(sender.toUser())
+                .setReceiver(receiver.toChatRoom())
+                .setSeenBy(seenBy.stream().map(UserDto::toUser).toList())
+                .setContent(content);
+        message.setId(id);
+        return message;
     }
 }

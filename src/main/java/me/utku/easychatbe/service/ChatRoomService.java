@@ -37,12 +37,10 @@ public class ChatRoomService implements BaseService<ChatRoomDto> {
     @Override
     public ChatRoomDto createEntity(ChatRoomDto entityDto) {
         User authUser = authService.getAuthenticatedUser();
-        return chatRoomRepository.save(ChatRoom.builder()
-                        .name(entityDto.name())
-                        .createdBy(authUser)
-                        .members(List.of(authUser))
-                        .isVisible(true)
-                        .build()
+        return chatRoomRepository.save(new ChatRoom()
+                        .setName(entityDto.name())
+                        .setCreatedBy(authUser)
+                        .setMembers(List.of(authUser))
         ).toChatRoomDto();
     }
 
