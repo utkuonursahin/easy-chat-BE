@@ -11,4 +11,5 @@ public interface BaseService <T> {
     T createEntity(T entityDto);
     T updateEntity(UUID id, T updateEntityDto) throws EntityNotFoundException;
     void deleteEntity(UUID id) throws EntityNotFoundException;
+    boolean existsById(UUID id);
 }

@@ -50,6 +50,11 @@ public class MessageService implements BaseService<MessageDto> {
         this.messageRepository.deleteById(id);
     }
 
+    @Override
+    public boolean existsById(UUID id) {
+        return this.messageRepository.existsById(id);
+    }
+
     public Page<List<MessageDto>> getMessagesPageByReceiverId(UUID receiverId, int page, int size) {
         return this.messageRepository.findAllByReceiver_IdOrderByCreatedAtDesc(receiverId, PageRequest.of(page,size))
                 .map(messages -> messages.stream().map(Message::toMessageDto).toList());

@@ -64,6 +64,11 @@ public class UserService implements BaseService<UserDto>,UserDetailsService {
         return user.orElseThrow(() -> new UsernameNotFoundException("User not found."));
     }
 
+    @Override
+    public boolean existsById(UUID id) {
+        return this.userRepository.existsById(id);
+    }
+
     public UserDto registerUser(UserRegisterDto userRegisterDto){
         return userRepository.save(new User()
                 .setUsername(userRegisterDto.username())

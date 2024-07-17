@@ -59,6 +59,11 @@ public class ChatRoomService implements BaseService<ChatRoomDto> {
         chatRoomRepository.deleteById(id);
     }
 
+    @Override
+    public boolean existsById(UUID id) {
+        return chatRoomRepository.existsById(id);
+    }
+
     public List<ChatRoomDto> getJoinedChatRooms(User user){
         return chatRoomRepository.findAllByMembersContaining(user).stream().map(ChatRoom::toChatRoomDto).toList();
     }
