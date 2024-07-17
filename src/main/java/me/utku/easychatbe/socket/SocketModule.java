@@ -5,9 +5,7 @@ import com.corundumstudio.socketio.listener.ConnectListener;
 import com.corundumstudio.socketio.listener.DataListener;
 import com.corundumstudio.socketio.listener.DisconnectListener;
 import lombok.extern.slf4j.Slf4j;
-import me.utku.easychatbe.dto.GenericResponse;
 import me.utku.easychatbe.dto.MessageDto;
-import me.utku.easychatbe.model.Message;
 import me.utku.easychatbe.service.MessageService;
 import org.springframework.stereotype.Component;
 
@@ -37,6 +35,7 @@ public class SocketModule {
     private DisconnectListener onDisconnected() {
         return client -> {
             log.info(String.format("SockedID: %s disconnected", client.getSessionId().toString()));
+            client.disconnect();
         };
     }
 
@@ -44,10 +43,10 @@ public class SocketModule {
         return (senderClient, data, ackSender) -> {
             log.info(String.format("Message received from %s: %s", senderClient.getSessionId().toString(), data.content()));
             String roomId = senderClient.getHandshakeData().getSingleUrlParam("room-id");
-            senderClient.getNamespace().getRoomOperations(roomId).getClients().forEach(x -> {
-                if(!x.getSessionId().equals(senderClient.getSessionId())) x.sendEvent("get_message", data);
-            });
             this.messageService.createEntity(data);
+            senderClient.getNamespace().getRoomOperations(roomId).getClients().stream()
+                    .filter(c -> !c.getSessionId().equals(senderClient.getSessionId()))
+                    .forEach(x -> x.sendEvent("get_message", data));
         };
     }
 }

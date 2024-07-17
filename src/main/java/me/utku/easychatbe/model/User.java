@@ -46,6 +46,6 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     public UserDto toUserDto(){
-        return new UserDto(this.getId(),username, email, List.copyOf(authorities));
+        return new UserDto(this.getId(),username, email, authorities);
     }
 }

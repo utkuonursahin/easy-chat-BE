@@ -6,8 +6,6 @@ import lombok.experimental.Accessors;
 import me.utku.easychatbe.dto.MessageDto;
 import org.hibernate.annotations.DynamicUpdate;
 
-import java.util.List;
-
 @Entity
 @DynamicUpdate
 @Getter
@@ -19,23 +17,20 @@ public class Message extends BaseEntity {
     private User sender;
     @ManyToOne(fetch = FetchType.LAZY)
     private ChatRoom receiver;
-    @ManyToMany(fetch = FetchType.LAZY)
-    private List<User> seenBy;
     private String content;
 
     public Message() {
         super();
     }
 
-    public Message(User sender, ChatRoom receiver, List<User> seenBy , String content) {
+    public Message(User sender, ChatRoom receiver, String content) {
         super();
         this.sender = sender;
         this.receiver = receiver;
         this.content = content;
-        this.seenBy = seenBy;
     }
 
     public MessageDto toMessageDto() {
-        return new MessageDto(this.getId(), this.getSender().toUserDto(), this.getReceiver().toChatRoomDto(), this.getSeenBy().stream().map(User::toUserDto).toList(), this.getContent());
+        return new MessageDto(this.getId(), this.getSender().toUserDto(), this.getReceiver().toChatRoomDto(), this.getContent());
     }
 }
