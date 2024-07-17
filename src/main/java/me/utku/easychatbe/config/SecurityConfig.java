@@ -5,7 +5,6 @@ import me.utku.easychatbe.enums.Role;
 import me.utku.easychatbe.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -34,8 +33,8 @@ import java.util.List;
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final UserService userService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserService userService;
     private final HandlerExceptionResolver handlerExceptionResolver;
 
     @Bean
