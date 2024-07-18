@@ -31,6 +31,6 @@ public class Message extends BaseEntity {
     }
 
     public MessageDto toMessageDto() {
-        return new MessageDto(this.getId(), this.getSender().toUserDto(), this.getReceiver().toChatRoomDto(), this.getContent());
+        return new MessageDto(this.getId(), this.getSender().toUserDto(), this.getReceiver().toChatRoomDto(), this.getContent(), this.getCreatedAt());
     }
 }

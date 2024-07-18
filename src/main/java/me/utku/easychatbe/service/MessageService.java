@@ -1,17 +1,20 @@
 package me.utku.easychatbe.service;
 
 import me.utku.easychatbe.dto.MessageDto;
+import me.utku.easychatbe.dto.PaginatedMessageDto;
 import me.utku.easychatbe.exception.EntityNotFoundException;
 import me.utku.easychatbe.model.Message;
 import me.utku.easychatbe.repository.MessageRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
+@Transactional
 public class MessageService implements BaseService<MessageDto> {
     private final MessageRepository messageRepository;
 
@@ -55,8 +58,8 @@ public class MessageService implements BaseService<MessageDto> {
         return this.messageRepository.existsById(id);
     }
 
-    public Page<List<MessageDto>> getMessagesPageByReceiverId(UUID receiverId, int page, int size) {
-        return this.messageRepository.findAllByReceiver_IdOrderByCreatedAtDesc(receiverId, PageRequest.of(page,size))
-                .map(messages -> messages.stream().map(Message::toMessageDto).toList());
+    public PaginatedMessageDto getMessagesPageByReceiverId(UUID receiverId, int page, int size) {
+        Page<Message> messagePage = this.messageRepository.findAllByReceiver_IdOrderByCreatedAtDesc(receiverId, PageRequest.of(page,size));
+        return new PaginatedMessageDto(messagePage.stream().map(Message::toMessageDto).toList(),page,size,messagePage.getTotalElements(),messagePage.getTotalPages());
     }
 }
