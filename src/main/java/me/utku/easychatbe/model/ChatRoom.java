@@ -19,6 +19,7 @@ public class ChatRoom extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private User createdBy;
     @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(inverseJoinColumns = @JoinColumn(unique = true))
     private List<User> members;
 
     public ChatRoom(){

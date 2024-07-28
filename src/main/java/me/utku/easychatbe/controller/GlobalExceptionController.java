@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.utku.easychatbe.dto.GenericResponse;
 import me.utku.easychatbe.exception.EntityNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -31,6 +32,12 @@ public class GlobalExceptionController extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         return ResponseEntity.status(status).body(new GenericResponse<>(status.value(), ex.getMessage(),false));
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<GenericResponse<Boolean>> dataIntegrityViolationExceptionHandler(DataIntegrityViolationException e) {
+        log.info("DataIntegrityViolationException: {}.", e.getMessage());
+        return new GenericResponse<>(HttpStatus.CONFLICT.value(), "Data integrity violation. " + "(" + e.getMessage() + ")",false).toResponseEntity();
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)
