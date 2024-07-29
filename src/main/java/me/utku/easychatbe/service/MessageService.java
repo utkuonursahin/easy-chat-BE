@@ -24,8 +24,7 @@ public class MessageService implements BaseService<MessageDto> {
 
     @Override
     public MessageDto getEntityById(UUID id) {
-        Message message = this.messageRepository.findById(id).orElse(null);
-        if(message == null) throw new EntityNotFoundException();
+        Message message = this.messageRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         return message.toMessageDto();
     }
 
@@ -41,15 +40,13 @@ public class MessageService implements BaseService<MessageDto> {
 
     @Override
     public MessageDto updateEntity(UUID id, MessageDto updateEntityDto) {
-        MessageDto message = this.getEntityById(id);
-        if(message == null) throw new EntityNotFoundException();
+        if(!existsById(id)) throw new EntityNotFoundException();
         return this.messageRepository.save(updateEntityDto.toMessage()).toMessageDto();
     }
 
     @Override
     public void deleteEntity(UUID id) {
-        MessageDto message = this.getEntityById(id);
-        if(message == null) throw new EntityNotFoundException();
+        if(!existsById(id)) throw new EntityNotFoundException();
         this.messageRepository.deleteById(id);
     }
 

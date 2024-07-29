@@ -45,13 +45,13 @@ public class ChatRoomService implements BaseService<ChatRoomDto> {
 
     @Override
     public ChatRoomDto updateEntity(UUID id, ChatRoomDto updateEntityDto) {
-        chatRoomRepository.findById(id).ifPresentOrElse(null, EntityNotFoundException::new);
+        if(!existsById(id)) throw new EntityNotFoundException();
         return chatRoomRepository.save(updateEntityDto.toChatRoom()).toChatRoomDto();
     }
 
     @Override
     public void deleteEntity(UUID id) {
-        chatRoomRepository.findById(id).ifPresentOrElse(null,EntityNotFoundException::new);
+        if(!existsById(id)) throw new EntityNotFoundException();
         chatRoomRepository.deleteById(id);
     }
 

@@ -29,8 +29,7 @@ public class UserService implements BaseService<UserDto>,UserDetailsService {
 
     @Override
     public UserDto getEntityById(UUID id) {
-        User user = this.userRepository.findById(id).orElse(null);
-        if(user == null) throw new EntityNotFoundException();
+        User user = this.userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         return user.toUserDto();
     }
 
@@ -46,15 +45,13 @@ public class UserService implements BaseService<UserDto>,UserDetailsService {
 
     @Override
     public UserDto updateEntity(UUID id,UserDto updateEntityDto) {
-        UserDto user = this.getEntityById(id);
-        if(user == null) throw new EntityNotFoundException();
+        if(!existsById(id)) throw new EntityNotFoundException();
         return this.userRepository.save(updateEntityDto.toUser()).toUserDto();
     }
 
     @Override
     public void deleteEntity(UUID id) {
-        UserDto user = this.getEntityById(id);
-        if(user == null) throw new EntityNotFoundException();
+        if(!existsById(id)) throw new EntityNotFoundException();
         this.userRepository.deleteById(id);
     }
 
