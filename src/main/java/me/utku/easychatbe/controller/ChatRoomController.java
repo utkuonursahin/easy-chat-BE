@@ -27,8 +27,14 @@ public class ChatRoomController extends CrudController<ChatRoomDto> {
     }
 
     @PostMapping("/join/{chatRoomId}")
-    public ResponseEntity<GenericResponse<ChatRoomDto>> joinChatRoom(@PathVariable UUID chatRoomId){
-        ChatRoomDto chatRoomDto = ((ChatRoomService)this.entityService).joinChatRoom(chatRoomId);
+    public ResponseEntity<GenericResponse<ChatRoomDto>> joinChatRoom(@PathVariable UUID chatRoomId, @AuthenticationPrincipal User user){
+        ChatRoomDto chatRoomDto = ((ChatRoomService)this.entityService).joinChatRoom(chatRoomId,user);
         return new GenericResponse<>(HttpStatus.OK.value(), "Joined to chat room successfully", chatRoomDto).toResponseEntity();
+    }
+
+    @DeleteMapping("/leave/{chatRoomId}")
+    public ResponseEntity<GenericResponse<ChatRoomDto>> leaveChatRoom(@PathVariable UUID chatRoomId, @AuthenticationPrincipal User user){
+        ChatRoomDto chatRoomDto = ((ChatRoomService)this.entityService).leaveChatRoom(chatRoomId, user);
+        return new GenericResponse<>(HttpStatus.OK.value(), "Left chat room successfully", chatRoomDto).toResponseEntity();
     }
 }

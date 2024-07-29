@@ -24,8 +24,7 @@ public class ChatRoomService implements BaseService<ChatRoomDto> {
 
     @Override
     public ChatRoomDto getEntityById(UUID id) {
-        ChatRoom chatRoom = chatRoomRepository.findById(id).orElse(null);
-        if (chatRoom == null) throw new EntityNotFoundException();
+        ChatRoom chatRoom = chatRoomRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         return chatRoom.toChatRoomDto();
     }
 
@@ -46,16 +45,13 @@ public class ChatRoomService implements BaseService<ChatRoomDto> {
 
     @Override
     public ChatRoomDto updateEntity(UUID id, ChatRoomDto updateEntityDto) {
-        ChatRoom chatRoom = chatRoomRepository.findById(id).orElse(null);
-        if (chatRoom == null) throw new EntityNotFoundException();
-        chatRoom = chatRoomRepository.save(updateEntityDto.toChatRoom());
-        return chatRoom.toChatRoomDto();
+        chatRoomRepository.findById(id).ifPresentOrElse(null, EntityNotFoundException::new);
+        return chatRoomRepository.save(updateEntityDto.toChatRoom()).toChatRoomDto();
     }
 
     @Override
     public void deleteEntity(UUID id) {
-        ChatRoom chatRoom = chatRoomRepository.findById(id).orElse(null);
-        if (chatRoom == null) throw new EntityNotFoundException();
+        chatRoomRepository.findById(id).ifPresentOrElse(null,EntityNotFoundException::new);
         chatRoomRepository.deleteById(id);
     }
 
@@ -68,11 +64,16 @@ public class ChatRoomService implements BaseService<ChatRoomDto> {
         return chatRoomRepository.findAllByMembersContaining(user).stream().map(ChatRoom::toChatRoomDto).toList();
     }
 
-    public ChatRoomDto joinChatRoom(UUID chatRoomId){
-        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElse(null);
-        if (chatRoom == null) throw new EntityNotFoundException();
-        User authUser = authService.getAuthenticatedUser();
-        chatRoom.getMembers().add(authUser);
+    public ChatRoomDto joinChatRoom(UUID chatRoomId, User user){
+        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElseThrow(EntityNotFoundException::new);
+        chatRoom.getMembers().add(user);
+        chatRoom = chatRoomRepository.save(chatRoom);
+        return chatRoom.toChatRoomDto();
+    }
+
+    public ChatRoomDto leaveChatRoom(UUID chatRoomId, User user){
+        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElseThrow(EntityNotFoundException::new);
+        chatRoom.getMembers().remove(user);
         chatRoom = chatRoomRepository.save(chatRoom);
         return chatRoom.toChatRoomDto();
     }

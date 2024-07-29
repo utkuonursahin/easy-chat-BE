@@ -12,6 +12,7 @@ import java.util.UUID;
 @MappedSuperclass
 @Getter
 @Setter
+@EqualsAndHashCode
 public abstract class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

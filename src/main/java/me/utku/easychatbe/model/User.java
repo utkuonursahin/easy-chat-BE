@@ -15,7 +15,7 @@ import java.util.List;
 @DynamicUpdate
 @Getter
 @Setter
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true,onlyExplicitlyIncluded = true)
 @Accessors(chain = true)
 public class User extends BaseEntity implements UserDetails {
     private String username;
