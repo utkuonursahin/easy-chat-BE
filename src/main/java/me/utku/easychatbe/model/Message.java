@@ -6,6 +6,9 @@ import lombok.experimental.Accessors;
 import me.utku.easychatbe.dto.MessageDto;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.time.Instant;
+import java.util.Optional;
+
 @Entity
 @DynamicUpdate
 @Getter
@@ -31,6 +34,6 @@ public class Message extends BaseEntity {
     }
 
     public MessageDto toMessageDto() {
-        return new MessageDto(this.getId(), this.getSender().toUserDto(), this.getReceiver().toChatRoomDto(), this.getContent(), this.getCreatedAt().toString());
+        return new MessageDto(this.getId(), this.getSender().toUserDto(), this.getReceiver().toChatRoomDto(), this.getContent(), Optional.ofNullable(this.getCreatedAt()).orElse(Instant.now()).toString());
     }
 }

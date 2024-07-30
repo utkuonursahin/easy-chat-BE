@@ -62,9 +62,7 @@ public class SocketModule {
             log.info(String.format("Message received from %s: %s", senderClient.getSessionId().toString(), data.content()));
             String roomId = userRoomTracker.getUserRoom(senderClient.getSessionId().toString());
             MessageDto savedMessage = this.messageService.createEntity(data);
-            senderClient.getNamespace().getRoomOperations(roomId).getClients().stream()
-                    .filter(c -> !c.getSessionId().equals(senderClient.getSessionId()))
-                    .forEach(x -> x.sendEvent("get_message", savedMessage));
+            senderClient.getNamespace().getRoomOperations(roomId).sendEvent("get_message", savedMessage);
         };
     }
 }
