@@ -12,7 +12,7 @@ public record UserDto(
         String email,
         List<Role> authorities
 ) {
-    public User toUser(){
+    public User toUser() {
         User user = new User()
                 .setUsername(username)
                 .setEmail(email)

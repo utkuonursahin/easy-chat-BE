@@ -15,7 +15,7 @@ public class SocketConfig implements CommandLineRunner {
     private int port;
 
     @Bean
-    public SocketIOServer socketIOServer(){
+    public SocketIOServer socketIOServer() {
         com.corundumstudio.socketio.Configuration config = new com.corundumstudio.socketio.Configuration();
         config.setHostname(hostname);
         config.setPort(port);

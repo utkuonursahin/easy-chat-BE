@@ -1,7 +1,9 @@
 package me.utku.easychatbe.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 import me.utku.easychatbe.dto.UserDto;
 import me.utku.easychatbe.enums.Role;
@@ -15,14 +17,15 @@ import java.util.List;
 @DynamicUpdate
 @Getter
 @Setter
-@EqualsAndHashCode(callSuper = true,onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 @Accessors(chain = true)
 public class User extends BaseEntity implements UserDetails {
     private String username;
     private String email;
     private String password;
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-    @Enumerated(EnumType.STRING) @Column(name= "authority", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "authority", nullable = false)
     private List<Role> authorities = List.of(Role.ROLE_USER);
     private boolean isEnabled = true;
     private boolean accountNonExpired = true;
@@ -45,7 +48,7 @@ public class User extends BaseEntity implements UserDetails {
         this.credentialsNonExpired = credentialsNonExpired;
     }
 
-    public UserDto toUserDto(){
-        return new UserDto(this.getId(),username, email, authorities);
+    public UserDto toUserDto() {
+        return new UserDto(this.getId(), username, email, authorities);
     }
 }

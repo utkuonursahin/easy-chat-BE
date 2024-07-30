@@ -30,28 +30,29 @@ public class AuthService {
 
     public UserDto authenticate(AuthRequest authRequest, HttpServletRequest request, HttpServletResponse response) {
         UserDto userDto = null;
-        try{
-            UsernamePasswordAuthenticationToken authToken = UsernamePasswordAuthenticationToken.unauthenticated(authRequest.username(),authRequest.password());
+        try {
+            UsernamePasswordAuthenticationToken authToken = UsernamePasswordAuthenticationToken.unauthenticated(authRequest.username(), authRequest.password());
             Authentication authentication = authenticationManager.authenticate(authToken);
             if (authentication.isAuthenticated()) {
                 SecurityContext context = securityContextHolderStrategy.createEmptyContext();
                 context.setAuthentication(authentication);
                 securityContextHolderStrategy.setContext(context);
                 securityContextRepository.saveContext(context, request, response);
-                userDto = ((User)authentication.getPrincipal()).toUserDto();
+                userDto = ((User) authentication.getPrincipal()).toUserDto();
             }
-        }catch (Exception e){
-            throw new BadCredentialsException("Failed authentication with USERNAME:"+authRequest.username());
+        } catch (Exception e) {
+            throw new BadCredentialsException("Failed authentication with USERNAME:" + authRequest.username());
         }
         return userDto;
     }
 
-    public GenericResponse<UserDto> checkIsAuthenticated(User user){
-        if(user == null) return new GenericResponse<>(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase(),null);
-        else return new GenericResponse<>(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(),user.toUserDto());
+    public GenericResponse<UserDto> checkIsAuthenticated(User user) {
+        if (user == null)
+            return new GenericResponse<>(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase(), null);
+        else return new GenericResponse<>(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), user.toUserDto());
     }
-
-    public User getAuthenticatedUser(){
-        return (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    
+    public User getAuthenticatedUser() {
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }

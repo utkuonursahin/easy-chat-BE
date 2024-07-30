@@ -40,13 +40,13 @@ public class MessageService implements BaseService<MessageDto> {
 
     @Override
     public MessageDto updateEntity(UUID id, MessageDto updateEntityDto) {
-        if(!existsById(id)) throw new EntityNotFoundException();
+        if (!existsById(id)) throw new EntityNotFoundException();
         return this.messageRepository.save(updateEntityDto.toMessage()).toMessageDto();
     }
 
     @Override
     public void deleteEntity(UUID id) {
-        if(!existsById(id)) throw new EntityNotFoundException();
+        if (!existsById(id)) throw new EntityNotFoundException();
         this.messageRepository.deleteById(id);
     }
 
@@ -56,7 +56,7 @@ public class MessageService implements BaseService<MessageDto> {
     }
 
     public PaginatedMessageDto getMessagesPageByReceiverId(UUID receiverId, int page, int size) {
-        Page<Message> messagePage = this.messageRepository.findAllByReceiver_IdOrderByCreatedAtDesc(receiverId, PageRequest.of(page,size));
-        return new PaginatedMessageDto(messagePage.stream().map(Message::toMessageDto).toList(),page,size,messagePage.getTotalElements(),messagePage.getTotalPages());
+        Page<Message> messagePage = this.messageRepository.findAllByReceiver_IdOrderByCreatedAtDesc(receiverId, PageRequest.of(page, size));
+        return new PaginatedMessageDto(messagePage.stream().map(Message::toMessageDto).toList(), page, size, messagePage.getTotalElements(), messagePage.getTotalPages());
     }
 }

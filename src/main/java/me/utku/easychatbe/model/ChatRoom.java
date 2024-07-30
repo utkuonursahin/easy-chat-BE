@@ -1,7 +1,9 @@
 package me.utku.easychatbe.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 import me.utku.easychatbe.dto.ChatRoomDto;
 import org.hibernate.annotations.DynamicUpdate;
@@ -22,7 +24,7 @@ public class ChatRoom extends BaseEntity {
     @JoinTable(inverseJoinColumns = @JoinColumn(unique = true))
     private List<User> members;
 
-    public ChatRoom(){
+    public ChatRoom() {
         super();
     }
 
@@ -33,7 +35,7 @@ public class ChatRoom extends BaseEntity {
         this.members = members;
     }
 
-    public ChatRoomDto toChatRoomDto(){
+    public ChatRoomDto toChatRoomDto() {
         return new ChatRoomDto(this.getId(), this.name, this.createdBy.toUserDto(), this.members.stream().map(User::toUserDto).toList());
     }
 }

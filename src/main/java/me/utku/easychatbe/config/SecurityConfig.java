@@ -51,7 +51,7 @@ public class SecurityConfig {
                                         "/api/auth/login/**",
                                         "/api/auth/logout",
                                         "/api/auth/is-authenticated"
-                                        ).permitAll()
+                                ).permitAll()
                                 .requestMatchers("/api/user/**").hasRole(Role.ROLE_ADMIN.getValue())
                                 .requestMatchers("/api/chat-rooms/**").hasRole(Role.ROLE_USER.getValue())
                                 .requestMatchers("/api/messages/**").hasRole(Role.ROLE_USER.getValue())
@@ -111,7 +111,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("http://localhost:3000"));
-        configuration.setAllowedMethods(List.of("GET","POST","PATCH","PUT","DELETE","OPTIONS"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Accept", "Authorization", "Content-Type", "Origin", "X-Requested-With"));
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

@@ -12,7 +12,7 @@ public record ChatRoomDto(
         UserDto createdBy,
         List<UserDto> members
 ) {
-    public ChatRoom toChatRoom(){
+    public ChatRoom toChatRoom() {
         ChatRoom chatRoom = new ChatRoom()
                 .setName(name)
                 .setCreatedBy(createdBy.toUser())

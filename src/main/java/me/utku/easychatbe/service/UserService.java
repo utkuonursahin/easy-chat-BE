@@ -18,7 +18,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class UserService implements BaseService<UserDto>,UserDetailsService {
+public class UserService implements BaseService<UserDto>, UserDetailsService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -44,14 +44,14 @@ public class UserService implements BaseService<UserDto>,UserDetailsService {
     }
 
     @Override
-    public UserDto updateEntity(UUID id,UserDto updateEntityDto) {
-        if(!existsById(id)) throw new EntityNotFoundException();
+    public UserDto updateEntity(UUID id, UserDto updateEntityDto) {
+        if (!existsById(id)) throw new EntityNotFoundException();
         return this.userRepository.save(updateEntityDto.toUser()).toUserDto();
     }
 
     @Override
     public void deleteEntity(UUID id) {
-        if(!existsById(id)) throw new EntityNotFoundException();
+        if (!existsById(id)) throw new EntityNotFoundException();
         this.userRepository.deleteById(id);
     }
 
@@ -66,7 +66,7 @@ public class UserService implements BaseService<UserDto>,UserDetailsService {
         return this.userRepository.existsById(id);
     }
 
-    public UserDto registerUser(UserRegisterDto userRegisterDto){
+    public UserDto registerUser(UserRegisterDto userRegisterDto) {
         return userRepository.save(new User()
                 .setUsername(userRegisterDto.username())
                 .setPassword(bCryptPasswordEncoder.encode(userRegisterDto.password()))

@@ -37,21 +37,21 @@ public class ChatRoomService implements BaseService<ChatRoomDto> {
     public ChatRoomDto createEntity(ChatRoomDto entityDto) {
         User authUser = authService.getAuthenticatedUser();
         return chatRoomRepository.save(new ChatRoom()
-                        .setName(entityDto.name())
-                        .setCreatedBy(authUser)
-                        .setMembers(List.of(authUser))
+                .setName(entityDto.name())
+                .setCreatedBy(authUser)
+                .setMembers(List.of(authUser))
         ).toChatRoomDto();
     }
 
     @Override
     public ChatRoomDto updateEntity(UUID id, ChatRoomDto updateEntityDto) {
-        if(!existsById(id)) throw new EntityNotFoundException();
+        if (!existsById(id)) throw new EntityNotFoundException();
         return chatRoomRepository.save(updateEntityDto.toChatRoom()).toChatRoomDto();
     }
 
     @Override
     public void deleteEntity(UUID id) {
-        if(!existsById(id)) throw new EntityNotFoundException();
+        if (!existsById(id)) throw new EntityNotFoundException();
         chatRoomRepository.deleteById(id);
     }
 
@@ -60,18 +60,18 @@ public class ChatRoomService implements BaseService<ChatRoomDto> {
         return chatRoomRepository.existsById(id);
     }
 
-    public List<ChatRoomDto> getJoinedChatRooms(User user){
+    public List<ChatRoomDto> getJoinedChatRooms(User user) {
         return chatRoomRepository.findAllByMembersContaining(user).stream().map(ChatRoom::toChatRoomDto).toList();
     }
 
-    public ChatRoomDto joinChatRoom(UUID chatRoomId, User user){
+    public ChatRoomDto joinChatRoom(UUID chatRoomId, User user) {
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElseThrow(EntityNotFoundException::new);
         chatRoom.getMembers().add(user);
         chatRoom = chatRoomRepository.save(chatRoom);
         return chatRoom.toChatRoomDto();
     }
 
-    public ChatRoomDto leaveChatRoom(UUID chatRoomId, User user){
+    public ChatRoomDto leaveChatRoom(UUID chatRoomId, User user) {
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElseThrow(EntityNotFoundException::new);
         chatRoom.getMembers().remove(user);
         chatRoom = chatRoomRepository.save(chatRoom);

@@ -1,7 +1,11 @@
 package me.utku.easychatbe.model;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ManyToOne;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 import me.utku.easychatbe.dto.MessageDto;
 import org.hibernate.annotations.DynamicUpdate;

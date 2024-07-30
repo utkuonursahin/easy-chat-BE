@@ -11,7 +11,7 @@ public record MessageDto(
         String content,
         String createdAt
 ) {
-    public Message toMessage(){
+    public Message toMessage() {
         Message message = new Message()
                 .setSender(sender.toUser())
                 .setReceiver(receiver.toChatRoom())

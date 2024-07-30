@@ -26,7 +26,7 @@ public class AuthController {
     }
 
     @GetMapping("/is-authenticated")
-    public ResponseEntity<GenericResponse<UserDto>> isAuthenticated(@AuthenticationPrincipal User user){
+    public ResponseEntity<GenericResponse<UserDto>> isAuthenticated(@AuthenticationPrincipal User user) {
         return authService.checkIsAuthenticated(user).toResponseEntity();
     }
 
