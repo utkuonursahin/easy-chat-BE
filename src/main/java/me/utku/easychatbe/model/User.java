@@ -21,6 +21,7 @@ import java.util.List;
 @Accessors(chain = true)
 public class User extends BaseEntity implements UserDetails {
     private String username;
+    @Column(unique = true)
     private String email;
     private String password;
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)

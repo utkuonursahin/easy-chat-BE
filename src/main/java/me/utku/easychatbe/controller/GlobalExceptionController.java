@@ -37,7 +37,7 @@ public class GlobalExceptionController extends ResponseEntityExceptionHandler {
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<GenericResponse<Boolean>> dataIntegrityViolationExceptionHandler(DataIntegrityViolationException e) {
         log.info("DataIntegrityViolationException: {}.", e.getMessage());
-        return new GenericResponse<>(HttpStatus.CONFLICT.value(), "Data integrity violation. " + "(" + e.getMessage() + ")", false).toResponseEntity();
+        return new GenericResponse<>(HttpStatus.CONFLICT.value(), "Data integrity violation.", false).toResponseEntity();
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)

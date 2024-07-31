@@ -56,8 +56,8 @@ public class UserService implements BaseService<UserDto>, UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findByUsername(username);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Optional<User> user = userRepository.findByEmail(email);
         return user.orElseThrow(() -> new UsernameNotFoundException("User not found."));
     }
 

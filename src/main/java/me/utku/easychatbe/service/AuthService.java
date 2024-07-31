@@ -31,7 +31,7 @@ public class AuthService {
     public UserDto authenticate(AuthRequest authRequest, HttpServletRequest request, HttpServletResponse response) {
         UserDto userDto = null;
         try {
-            UsernamePasswordAuthenticationToken authToken = UsernamePasswordAuthenticationToken.unauthenticated(authRequest.username(), authRequest.password());
+            UsernamePasswordAuthenticationToken authToken = UsernamePasswordAuthenticationToken.unauthenticated(authRequest.email(), authRequest.password());
             Authentication authentication = authenticationManager.authenticate(authToken);
             if (authentication.isAuthenticated()) {
                 SecurityContext context = securityContextHolderStrategy.createEmptyContext();
@@ -41,7 +41,7 @@ public class AuthService {
                 userDto = ((User) authentication.getPrincipal()).toUserDto();
             }
         } catch (Exception e) {
-            throw new BadCredentialsException("Failed authentication with USERNAME:" + authRequest.username());
+            throw new BadCredentialsException("Failed authentication with USERNAME:" + authRequest.email());
         }
         return userDto;
     }
@@ -51,7 +51,7 @@ public class AuthService {
             return new GenericResponse<>(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase(), null);
         else return new GenericResponse<>(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), user.toUserDto());
     }
-    
+
     public User getAuthenticatedUser() {
         return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
