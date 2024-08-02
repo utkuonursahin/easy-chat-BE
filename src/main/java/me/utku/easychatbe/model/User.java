@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import me.utku.easychatbe.dto.UserDto;
+import me.utku.easychatbe.dto.user.UserDto;
 import me.utku.easychatbe.enums.Role;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.security.core.userdetails.UserDetails;

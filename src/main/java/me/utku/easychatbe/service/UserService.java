@@ -1,7 +1,8 @@
 package me.utku.easychatbe.service;
 
-import me.utku.easychatbe.dto.UserDto;
-import me.utku.easychatbe.dto.UserRegisterDto;
+import me.utku.easychatbe.dto.user.UserDto;
+import me.utku.easychatbe.dto.user.UserRegisterDto;
+import me.utku.easychatbe.dto.user.UserUpdateDto;
 import me.utku.easychatbe.enums.Role;
 import me.utku.easychatbe.exception.EntityNotFoundException;
 import me.utku.easychatbe.exception.FeatureNotSupportedException;
@@ -73,5 +74,14 @@ public class UserService implements BaseService<UserDto>, UserDetailsService {
                 .setEmail(userRegisterDto.email())
                 .setAuthorities(List.of(Role.ROLE_USER))
         ).toUserDto();
+    }
+
+    public UserDto updateMe(User user, UserUpdateDto userUpdateDto) {
+        user.setUsername(userUpdateDto.username());
+        user.setEmail(userUpdateDto.email());
+        if (!userUpdateDto.newPassword().isEmpty() && !bCryptPasswordEncoder.matches(userUpdateDto.oldPassword(), user.getPassword())) {
+            user.setPassword(bCryptPasswordEncoder.encode(userUpdateDto.newPassword()));
+        }
+        return userRepository.save(user).toUserDto();
     }
 }

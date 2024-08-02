@@ -1,7 +1,7 @@
 package me.utku.easychatbe.service;
 
-import me.utku.easychatbe.dto.MessageDto;
-import me.utku.easychatbe.dto.PaginatedMessageDto;
+import me.utku.easychatbe.dto.message.MessageDto;
+import me.utku.easychatbe.dto.message.PaginatedMessageDto;
 import me.utku.easychatbe.exception.EntityNotFoundException;
 import me.utku.easychatbe.model.Message;
 import me.utku.easychatbe.repository.MessageRepository;

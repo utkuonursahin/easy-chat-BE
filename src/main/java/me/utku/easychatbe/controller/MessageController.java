@@ -1,8 +1,8 @@
 package me.utku.easychatbe.controller;
 
 import me.utku.easychatbe.dto.GenericResponse;
-import me.utku.easychatbe.dto.MessageDto;
-import me.utku.easychatbe.dto.PaginatedMessageDto;
+import me.utku.easychatbe.dto.message.MessageDto;
+import me.utku.easychatbe.dto.message.PaginatedMessageDto;
 import me.utku.easychatbe.service.MessageService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

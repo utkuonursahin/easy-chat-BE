@@ -1,4 +1,4 @@
-package me.utku.easychatbe.dto;
+package me.utku.easychatbe.dto.user;
 
 public record UserRegisterDto(
         String username,

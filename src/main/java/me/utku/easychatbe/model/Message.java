@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import me.utku.easychatbe.dto.MessageDto;
+import me.utku.easychatbe.dto.message.MessageDto;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.Instant;

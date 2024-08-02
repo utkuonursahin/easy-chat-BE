@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import me.utku.easychatbe.dto.ChatRoomDto;
+import me.utku.easychatbe.dto.chatroom.ChatRoomDto;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.List;

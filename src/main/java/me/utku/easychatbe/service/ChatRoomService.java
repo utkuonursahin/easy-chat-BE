@@ -1,6 +1,6 @@
 package me.utku.easychatbe.service;
 
-import me.utku.easychatbe.dto.ChatRoomDto;
+import me.utku.easychatbe.dto.chatroom.ChatRoomDto;
 import me.utku.easychatbe.exception.EntityNotFoundException;
 import me.utku.easychatbe.model.ChatRoom;
 import me.utku.easychatbe.model.User;

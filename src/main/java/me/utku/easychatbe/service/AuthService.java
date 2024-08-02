@@ -4,7 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import me.utku.easychatbe.dto.AuthRequest;
 import me.utku.easychatbe.dto.GenericResponse;
-import me.utku.easychatbe.dto.UserDto;
+import me.utku.easychatbe.dto.user.UserDto;
 import me.utku.easychatbe.model.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;

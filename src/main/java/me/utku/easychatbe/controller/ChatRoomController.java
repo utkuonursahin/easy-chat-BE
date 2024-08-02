@@ -1,7 +1,7 @@
 package me.utku.easychatbe.controller;
 
-import me.utku.easychatbe.dto.ChatRoomDto;
 import me.utku.easychatbe.dto.GenericResponse;
+import me.utku.easychatbe.dto.chatroom.ChatRoomDto;
 import me.utku.easychatbe.model.User;
 import me.utku.easychatbe.service.ChatRoomService;
 import org.springframework.http.HttpStatus;

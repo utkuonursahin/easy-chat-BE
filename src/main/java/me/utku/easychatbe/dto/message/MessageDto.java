@@ -1,5 +1,7 @@
-package me.utku.easychatbe.dto;
+package me.utku.easychatbe.dto.message;
 
+import me.utku.easychatbe.dto.chatroom.ChatRoomDto;
+import me.utku.easychatbe.dto.user.UserDto;
 import me.utku.easychatbe.model.Message;
 
 import java.util.UUID;

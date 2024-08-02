@@ -1,4 +1,4 @@
-package me.utku.easychatbe.dto;
+package me.utku.easychatbe.dto.user;
 
 import me.utku.easychatbe.enums.Role;
 import me.utku.easychatbe.model.User;
