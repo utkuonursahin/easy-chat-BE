@@ -6,6 +6,7 @@ import me.utku.easychatbe.dto.user.UserUpdateDto;
 import me.utku.easychatbe.enums.Role;
 import me.utku.easychatbe.exception.EntityNotFoundException;
 import me.utku.easychatbe.exception.FeatureNotSupportedException;
+import me.utku.easychatbe.exception.PasswordIsIncorrectForChangeException;
 import me.utku.easychatbe.model.User;
 import me.utku.easychatbe.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -79,9 +80,13 @@ public class UserService implements BaseService<UserDto>, UserDetailsService {
     public UserDto updateMe(User user, UserUpdateDto userUpdateDto) {
         user.setUsername(userUpdateDto.username());
         user.setEmail(userUpdateDto.email());
-        if (!userUpdateDto.newPassword().isEmpty() && !bCryptPasswordEncoder.matches(userUpdateDto.oldPassword(), user.getPassword())) {
-            user.setPassword(bCryptPasswordEncoder.encode(userUpdateDto.newPassword()));
-        }
+        if (!userUpdateDto.newPassword().isEmpty()) this.updatePassword(user, userUpdateDto);
         return userRepository.save(user).toUserDto();
+    }
+    
+    private void updatePassword(User user, UserUpdateDto userUpdateDto) {
+        if (!bCryptPasswordEncoder.matches(userUpdateDto.oldPassword(), user.getPassword())) {
+            throw new PasswordIsIncorrectForChangeException();
+        } else user.setPassword(bCryptPasswordEncoder.encode(userUpdateDto.newPassword()));
     }
 }

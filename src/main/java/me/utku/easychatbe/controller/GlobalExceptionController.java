@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.utku.easychatbe.dto.GenericResponse;
 import me.utku.easychatbe.exception.EntityNotFoundException;
+import me.utku.easychatbe.exception.PasswordIsIncorrectForChangeException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -68,6 +69,12 @@ public class GlobalExceptionController extends ResponseEntityExceptionHandler {
     public ResponseEntity<GenericResponse<Boolean>> entityNotFoundExceptionHandler(EntityNotFoundException e) {
         log.info("EntityNotFoundException: {}.", e.getMessage());
         return new GenericResponse<>(HttpStatus.NOT_FOUND.value(), "Entity not found.", false).toResponseEntity();
+    }
+
+    @ExceptionHandler(PasswordIsIncorrectForChangeException.class)
+    public ResponseEntity<GenericResponse<Boolean>> passwordIsIncorrectForChangeExceptionHandler(PasswordIsIncorrectForChangeException e) {
+        log.info("PasswordIsIncorrectForChangeException: {}.", e.getMessage());
+        return new GenericResponse<>(HttpStatus.BAD_REQUEST.value(), "Password is incorrect for change.", false).toResponseEntity();
     }
 
     @ExceptionHandler(Exception.class)
