@@ -5,7 +5,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import me.utku.easychatbe.dto.chatroom.ChatRoomDto;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.List;
@@ -33,9 +32,5 @@ public class ChatRoom extends BaseEntity {
         this.name = name;
         this.createdBy = createdBy;
         this.members = members;
-    }
-
-    public ChatRoomDto toChatRoomDto() {
-        return new ChatRoomDto(this.getId(), this.name, this.createdBy.toUserDto(), this.members.stream().map(User::toUserDto).toList());
     }
 }

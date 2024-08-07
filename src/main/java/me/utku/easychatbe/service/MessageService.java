@@ -3,6 +3,7 @@ package me.utku.easychatbe.service;
 import me.utku.easychatbe.dto.message.MessageDto;
 import me.utku.easychatbe.dto.message.PaginatedMessageDto;
 import me.utku.easychatbe.exception.EntityNotFoundException;
+import me.utku.easychatbe.mapper.MessageMapper;
 import me.utku.easychatbe.model.Message;
 import me.utku.easychatbe.repository.MessageRepository;
 import org.springframework.data.domain.Page;
@@ -17,31 +18,35 @@ import java.util.UUID;
 @Transactional
 public class MessageService implements BaseService<MessageDto> {
     private final MessageRepository messageRepository;
+    private final MessageMapper messageMapper;
 
-    public MessageService(MessageRepository messageRepository) {
+    public MessageService(MessageRepository messageRepository, MessageMapper messageMapper) {
         this.messageRepository = messageRepository;
+        this.messageMapper = messageMapper;
     }
 
     @Override
     public MessageDto getEntityById(UUID id) {
         Message message = this.messageRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        return message.toMessageDto();
+        return messageMapper.toMessageDto(message);
     }
 
     @Override
     public List<MessageDto> getAllEntities() {
-        return this.messageRepository.findAll().stream().map(Message::toMessageDto).toList();
+        return this.messageRepository.findAll().stream().map(messageMapper::toMessageDto).toList();
     }
 
     @Override
     public MessageDto createEntity(MessageDto entityDto) {
-        return this.messageRepository.save(entityDto.toMessage()).toMessageDto();
+        Message newMessage = this.messageRepository.save(messageMapper.toMessage(entityDto));
+        return messageMapper.toMessageDto(newMessage);
     }
 
     @Override
     public MessageDto updateEntity(UUID id, MessageDto updateEntityDto) {
         if (!existsById(id)) throw new EntityNotFoundException();
-        return this.messageRepository.save(updateEntityDto.toMessage()).toMessageDto();
+        Message message = this.messageRepository.save(messageMapper.toMessage(updateEntityDto));
+        return messageMapper.toMessageDto(message);
     }
 
     @Override
@@ -57,6 +62,6 @@ public class MessageService implements BaseService<MessageDto> {
 
     public PaginatedMessageDto getMessagesPageByReceiverId(UUID receiverId, int page, int size) {
         Page<Message> messagePage = this.messageRepository.findAllByReceiver_IdOrderByCreatedAtDesc(receiverId, PageRequest.of(page, size));
-        return new PaginatedMessageDto(messagePage.stream().map(Message::toMessageDto).toList(), page, size, messagePage.getTotalElements(), messagePage.getTotalPages());
+        return new PaginatedMessageDto(messagePage.stream().map(messageMapper::toMessageDto).toList(), page, size, messagePage.getTotalElements(), messagePage.getTotalPages());
     }
 }

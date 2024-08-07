@@ -5,7 +5,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import me.utku.easychatbe.dto.user.UserDto;
 import me.utku.easychatbe.enums.Role;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -47,9 +46,5 @@ public class User extends BaseEntity implements UserDetails {
         this.accountNonExpired = accountNonExpired;
         this.accountNonLocked = accountNonLocked;
         this.credentialsNonExpired = credentialsNonExpired;
-    }
-
-    public UserDto toUserDto() {
-        return new UserDto(this.getId(), username, email, authorities);
     }
 }

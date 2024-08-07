@@ -7,6 +7,7 @@ import me.utku.easychatbe.enums.Role;
 import me.utku.easychatbe.exception.EntityNotFoundException;
 import me.utku.easychatbe.exception.FeatureNotSupportedException;
 import me.utku.easychatbe.exception.PasswordIsIncorrectForChangeException;
+import me.utku.easychatbe.mapper.UserMapper;
 import me.utku.easychatbe.model.User;
 import me.utku.easychatbe.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,21 +24,23 @@ import java.util.UUID;
 public class UserService implements BaseService<UserDto>, UserDetailsService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserMapper userMapper;
 
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.userMapper = userMapper;
     }
 
     @Override
     public UserDto getEntityById(UUID id) {
         User user = this.userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        return user.toUserDto();
+        return userMapper.toUserDto(user);
     }
 
     @Override
     public List<UserDto> getAllEntities() {
-        return this.userRepository.findAll().stream().map(User::toUserDto).toList();
+        return this.userRepository.findAll().stream().map(userMapper::toUserDto).toList();
     }
 
     @Override
@@ -48,7 +51,8 @@ public class UserService implements BaseService<UserDto>, UserDetailsService {
     @Override
     public UserDto updateEntity(UUID id, UserDto updateEntityDto) {
         if (!existsById(id)) throw new EntityNotFoundException();
-        return this.userRepository.save(updateEntityDto.toUser()).toUserDto();
+        User updatedUser = this.userRepository.save(userMapper.toUser(updateEntityDto));
+        return userMapper.toUserDto(updatedUser);
     }
 
     @Override
@@ -69,21 +73,23 @@ public class UserService implements BaseService<UserDto>, UserDetailsService {
     }
 
     public UserDto registerUser(UserRegisterDto userRegisterDto) {
-        return userRepository.save(new User()
+        User registeredUser = userRepository.save(new User()
                 .setUsername(userRegisterDto.username())
                 .setPassword(bCryptPasswordEncoder.encode(userRegisterDto.password()))
                 .setEmail(userRegisterDto.email())
                 .setAuthorities(List.of(Role.ROLE_USER))
-        ).toUserDto();
+        );
+        return userMapper.toUserDto(registeredUser);
     }
 
     public UserDto updateMe(User user, UserUpdateDto userUpdateDto) {
         user.setUsername(userUpdateDto.username());
         user.setEmail(userUpdateDto.email());
         if (!userUpdateDto.newPassword().isEmpty()) this.updatePassword(user, userUpdateDto);
-        return userRepository.save(user).toUserDto();
+        User updatedUser = userRepository.save(user);
+        return userMapper.toUserDto(updatedUser);
     }
-    
+
     private void updatePassword(User user, UserUpdateDto userUpdateDto) {
         if (!bCryptPasswordEncoder.matches(userUpdateDto.oldPassword(), user.getPassword())) {
             throw new PasswordIsIncorrectForChangeException();

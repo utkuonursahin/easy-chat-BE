@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import me.utku.easychatbe.dto.AuthRequest;
 import me.utku.easychatbe.dto.GenericResponse;
 import me.utku.easychatbe.dto.user.UserDto;
+import me.utku.easychatbe.mapper.UserMapper;
 import me.utku.easychatbe.model.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,10 +23,12 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final SecurityContextRepository securityContextRepository;
     private final SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
+    private final UserMapper userMapper;
 
-    public AuthService(AuthenticationManager authenticationManager, SecurityContextRepository securityContextRepository) {
+    public AuthService(AuthenticationManager authenticationManager, SecurityContextRepository securityContextRepository, UserMapper userMapper) {
         this.authenticationManager = authenticationManager;
         this.securityContextRepository = securityContextRepository;
+        this.userMapper = userMapper;
     }
 
     public UserDto authenticate(AuthRequest authRequest, HttpServletRequest request, HttpServletResponse response) {
@@ -38,7 +41,7 @@ public class AuthService {
                 context.setAuthentication(authentication);
                 securityContextHolderStrategy.setContext(context);
                 securityContextRepository.saveContext(context, request, response);
-                userDto = ((User) authentication.getPrincipal()).toUserDto();
+                userDto = userMapper.toUserDto(((User) authentication.getPrincipal()));
             }
         } catch (Exception e) {
             throw new BadCredentialsException("Failed authentication with USERNAME:" + authRequest.email());
@@ -49,7 +52,8 @@ public class AuthService {
     public GenericResponse<UserDto> checkIsAuthenticated(User user) {
         if (user == null)
             return new GenericResponse<>(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase(), null);
-        else return new GenericResponse<>(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), user.toUserDto());
+        else
+            return new GenericResponse<>(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), userMapper.toUserDto(user));
     }
 
     public User getAuthenticatedUser() {

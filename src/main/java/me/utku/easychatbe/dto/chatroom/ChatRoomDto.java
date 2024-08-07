@@ -1,10 +1,8 @@
 package me.utku.easychatbe.dto.chatroom;
 
 import me.utku.easychatbe.dto.user.UserDto;
-import me.utku.easychatbe.model.ChatRoom;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public record ChatRoomDto(
@@ -13,12 +11,4 @@ public record ChatRoomDto(
         UserDto createdBy,
         List<UserDto> members
 ) {
-    public ChatRoom toChatRoom() {
-        ChatRoom chatRoom = new ChatRoom()
-                .setName(name)
-                .setCreatedBy(createdBy.toUser())
-                .setMembers(Optional.ofNullable(members).orElse(List.of()).stream().map(UserDto::toUser).toList());
-        chatRoom.setId(id);
-        return chatRoom;
-    }
 }
