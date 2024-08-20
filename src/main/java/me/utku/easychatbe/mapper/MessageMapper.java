@@ -16,6 +16,6 @@ public interface MessageMapper {
     Message toMessage(MessageDto messageDto);
 
     default String instantToString(Instant createdAt) {
-        return Optional.ofNullable(createdAt).map(Instant::toString).orElse(Instant.now().toString());
+        return Optional.ofNullable(createdAt).orElse(Instant.now()).toString();
     }
 }
