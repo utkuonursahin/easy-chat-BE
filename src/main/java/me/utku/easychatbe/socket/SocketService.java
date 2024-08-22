@@ -5,10 +5,10 @@ import com.corundumstudio.socketio.listener.DataListener;
 import com.corundumstudio.socketio.listener.DisconnectListener;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import me.utku.easychatbe.dto.chatroom.ChatRoomDto;
-import me.utku.easychatbe.dto.message.MessageDto;
+import me.utku.easychatbe.chatroom.ChatRoomDto;
+import me.utku.easychatbe.message.MessageDto;
 import me.utku.easychatbe.enums.WebSocketEvent;
-import me.utku.easychatbe.service.MessageService;
+import me.utku.easychatbe.message.MessageService;
 import org.springframework.stereotype.Service;
 
 @Slf4j

@@ -2,7 +2,7 @@ package me.utku.easychatbe.config;
 
 import lombok.RequiredArgsConstructor;
 import me.utku.easychatbe.enums.Role;
-import me.utku.easychatbe.service.UserService;
+import me.utku.easychatbe.user.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
