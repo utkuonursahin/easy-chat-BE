@@ -6,9 +6,10 @@ import com.corundumstudio.socketio.listener.DisconnectListener;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.utku.easychatbe.chatroom.ChatRoomDto;
-import me.utku.easychatbe.message.MessageDto;
 import me.utku.easychatbe.enums.WebSocketEvent;
+import me.utku.easychatbe.message.MessageDto;
 import me.utku.easychatbe.message.MessageService;
+import me.utku.easychatbe.user.UserDto;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -52,6 +53,26 @@ public class SocketService {
             String roomId = userRoomTracker.getUserRoom(senderClient.getSessionId().toString());
             MessageDto savedMessage = this.messageService.createEntity(data);
             senderClient.getNamespace().getRoomOperations(roomId).sendEvent(WebSocketEvent.GET_MESSAGE.getEvent(), savedMessage);
+        };
+    }
+
+    public DataListener<UserDto> onTyping() {
+        return (senderClient, data, ackSender) -> {
+            log.info(String.format("User %s is typing", data.username()));
+            String roomId = userRoomTracker.getUserRoom(senderClient.getSessionId().toString());
+            senderClient.getNamespace().getRoomOperations(roomId).getClients().stream()
+                    .filter(client -> !client.getSessionId().toString().equals(senderClient.getSessionId().toString()))
+                    .forEach(client -> client.sendEvent(WebSocketEvent.TYPING.getEvent(), data));
+        };
+    }
+
+    public DataListener<UserDto> onStopTyping() {
+        return (senderClient, data, ackSender) -> {
+            log.info(String.format("User %s stopped typing", data.username()));
+            String roomId = userRoomTracker.getUserRoom(senderClient.getSessionId().toString());
+            senderClient.getNamespace().getRoomOperations(roomId).getClients().stream()
+                    .filter(client -> !client.getSessionId().toString().equals(senderClient.getSessionId().toString()))
+                    .forEach(client -> client.sendEvent(WebSocketEvent.STOP_TYPING.getEvent(), data));
         };
     }
 }
